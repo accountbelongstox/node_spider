@@ -1,8 +1,8 @@
 const Conf = require('ee-core/config');
 const Browser = require('./main/main');
 const path = require('path');
-const Util = require('./provider/util');
-const practical = require('./provider/practical');
+const Util = require('../provider/util');
+const practical = require('../provider/practical');
 const { app } = require('electron');
 
 const findElectronAppDir = Util.file.findRootDirectory(__dirname)
@@ -18,7 +18,7 @@ if(executablePath){
   console.log(`systemChromePath`,systemChromePath)
 }
 
-const {opt} = require('./provider/practical');
+const {opt} = require('../provider/practical');
 opt.setBaseDir(appRoot)
 
 class SpiderAddon {

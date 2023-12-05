@@ -4,8 +4,8 @@ const { DownloadInterface } = require('../../../interface/modus/download_interfa
 const path = require('path');
 const urlModule = require('url');
 const uuidv4 = require('uuid').v4;
-const Util = require('../../../provider/util');
-// const Practical = require('../../../provider/practical');
+const Util = require('../../../../provider/util');
+// const Practical = require('../../../../provider/practical');
 
 class Download extends DownloadInterface {
 

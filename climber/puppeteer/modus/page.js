@@ -1,6 +1,6 @@
 'use strict';
 const { PageInterface } = require('../../../interface/modus/page_interface');
-const Util = require('../../../provider/util')
+const Util = require('../../../../provider/util')
 
 class Page extends PageInterface {
     browser
