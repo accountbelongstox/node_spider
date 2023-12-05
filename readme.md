@@ -1,3 +1,7 @@
+Require:
+../provider/
+from : https://gitee.com/accountbelongstox/node_provider.git
+
 NPM-depandecy:
     "lodash": "^4.17.21",
     "puppeteer": "^21.3.8",
