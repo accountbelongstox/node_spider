@@ -1,6 +1,6 @@
 'use strict';
 const { ContentInterface } = require('../../../interface/modus/content_interface');
-const Util = require('../../../../provider/util')
+const Util = require('../../../../node_provider/utils')
 
 class Content extends ContentInterface {
 

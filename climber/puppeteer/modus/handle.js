@@ -1,6 +1,6 @@
 'use strict';
 const { HandleInterface } = require('../../../interface/modus/handle_interface');
-const Util = require('../../../../provider/util')
+const Util = require('../../../../node_provider/utils')
 
 class Handle extends HandleInterface {
 

@@ -15,8 +15,8 @@ const { exec } = require('child_process');
 const driversDict = {}
 const PuppeteerDriver = require('../climber/puppeteer/driver')
 // const SeleniumDriver = require('./climber/selenium/driver')
-const Util = require('../../provider/util');
-const {opt} = require('../../provider/practical');
+const Util = require('../../node_provider/utils');
+const {opt} = require('../../node_provider/practicals');
 let config = opt.initConfig()
 
 class Browser {

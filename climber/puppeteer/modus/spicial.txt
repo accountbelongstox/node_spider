@@ -1,5 +1,5 @@
 'use strict';
-const Util = require('../../../../provider/util')
+const Util = require('../../../../node_provider/utils')
 
 class Special {
     async init(browser, page) {

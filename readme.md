@@ -1,5 +1,5 @@
 Require:
-../provider/
+../node_provider/
 from : https://gitee.com/accountbelongstox/node_provider.git
 
 NPM-depandecy:
