@@ -5,6 +5,7 @@ from datetime import datetime
 class DirectoryScanner:
     def __init__(self):
         self.scanned_dirs = []
+        self.root_directory = os.getcwd()
 
     def print_error(self, text):
         print("\033[91m{}\033[00m".format(text))  # Print text in red color
@@ -71,8 +72,25 @@ git diff --name-only --diff-filter=U
 git pull origin master
 git diff --name-only --diff-filter=U
         """
+    def generate_autopython(self,destination_file):
+        try:
+            with open(__file__, 'r', encoding='utf-8') as source:
+                content = source.read()
+                with open(destination_file, 'w', encoding='utf-8') as dest:
+                    dest.write(content)
+            self.print_info("File copied successfully.")
+        except FileNotFoundError:
+            self.print_warn("Source file not found.")
+        except Exception as e:
+            self.print_error(f"An error occurred: {str(e)}")
 
     def generate_scripts(self, directory):
+        # Check if gitput.bat exists
+        gitput_bat_path = os.path.join(directory, "gitauto.py")
+        if not os.path.exists(gitput_bat_path):
+            self.generate_autopython(gitput_bat_path)
+        else:
+            self.print_info(f"{directory} gitauto.py already exists. Skipping generation.")
         # Check if gitput.bat exists
         gitput_bat_path = os.path.join(directory, "gitput.bat")
         if not os.path.exists(gitput_bat_path):
@@ -102,41 +120,39 @@ git diff --name-only --diff-filter=U
         else:
             self.print_info(f"{directory} gitpull.sh already exists. Skipping generation.")
 
-    def scan_directory(self, root_dir, skip_dirs):
-        for dirpath, dirnames, filenames in os.walk(root_dir):
-            # Remove directories to skip
-            for skip_dir in skip_dirs.get('skip_whole', []):
-                if skip_dir in dirnames:
-                    dirnames.remove(skip_dir)
+    def scan_directory(self,root_directory=None, skip_dirs={}):
+        if root_directory==None:
+            root_directory = self.root_directory
 
-            for filename in filenames:
-                file_path = os.path.join(dirpath, filename)
-
-            for dirname in dirnames:
-                subdir = os.path.join(dirpath, dirname)
-
-                # Skip directories based on skip_start and skip_end rules
-                for skip_dir in skip_dirs.get('skip_start', []):
-                    if subdir.startswith(os.path.join(root_dir, skip_dir)):
-                        continue
-
-                for skip_dir in skip_dirs.get('skip_end', []):
-                    if subdir.endswith(skip_dir):
-                        continue
-
-                # Check if the directory has already been scanned to avoid duplicates
-                if subdir in self.scanned_dirs:
-                    self.print_warn(f"Skip: {subdir}")
-                    continue
-
-                git_dir = os.path.join(subdir, '.git')
-                if os.path.isdir(git_dir):
-                    self.generate_scripts(subdir)
-                    self.scanned_dirs.append(subdir)  # Add the directory to the scanned set
-                    self.print_info(f"Git-Directory: {subdir}")
-                    os.chdir(subdir)
-                    self.git_commit_and_push(subdir)
-                    os.chdir(root_dir)
+        def not_skip(directory):
+            if directory in skip_dirs.get('skip_whole', []):
+                return False
+            for skip_dir in skip_dirs.get('skip_start', []):
+                if directory.startswith(os.path.join(root_directory, skip_dir)):
+                    return False
+            for skip_dir in skip_dirs.get('skip_end', []):
+                if directory.endswith(skip_dir):
+                    return False
+            return True
+        
+        for item in os.listdir(root_directory):
+            item_path = os.path.join(root_directory, item)
+            if os.path.isdir(item_path):
+                if not_skip(item):
+                    git_dir = os.path.join(item_path, '.git')
+                    if os.path.isdir(git_dir):
+                        self.print_info(f"is git:{item_path}")
+                        self.git_commmit_directory(item_path)
+                    self.scan_directory(item_path,skip_dirs)
+            else:
+                pass
+        
+    def git_commmit_directory(self, directory):
+        self.generate_scripts(directory)
+        self.print_info(f"Git-Directory: {directory}")
+        os.chdir(directory)
+        self.git_commit_and_push(directory)
+        os.chdir(self.root_directory)
 
 # Specify directories to skip
 skip_dirs = {
@@ -145,11 +161,7 @@ skip_dirs = {
     'skip_end': []
 }
 
-# Specify the root directory to scan
-root_directory = os.getcwd()
-
-# Create an instance of DirectoryScanner
 scanner = DirectoryScanner()
 
 # Perform the scan
-scanner.scan_directory(root_directory, skip_dirs)
+scanner.scan_directory( None,skip_dirs)
