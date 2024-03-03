@@ -83,7 +83,7 @@ git diff --name-only --diff-filter=U
             with open(destination_file, 'r', encoding='utf-8') as dest:
                 dest_content = dest.read()
             if dest_content != source_content:
-                print("The content of destination file is different from source file. Overwriting...")
+                self.print_warn("The content of destination file is different from source file. Overwriting...")
                 # If contents are different, overwrite destination file with source content
                 with open(destination_file, 'w', encoding='utf-8') as dest:
                     dest.write(source_content)
@@ -91,7 +91,7 @@ git diff --name-only --diff-filter=U
             else:
                 print("The content of destination file is the same as source file. No need to overwrite.")
         else:
-            print("Destination file does not exist. Creating a new file...")
+            self.print_warn("Destination file does not exist. Creating a new file...")
             # If destination file does not exist, create a new file with source content
             with open(destination_file, 'w', encoding='utf-8') as dest:
                 dest.write(source_content)
