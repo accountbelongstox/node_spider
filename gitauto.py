@@ -101,8 +101,8 @@ git diff --name-only --diff-filter=U
         self.overwrite_if_different(__file__,os.path.join(directory, "gitauto.py"))
         self.overwrite_if_different(self.get_put_cmd_by_win(),os.path.join(directory, "gitput.sh"))
         self.overwrite_if_different(self.get_put_cmd_by_linux(),os.path.join(directory, "gitput.bat"))
-        self.overwrite_if_different(self.get_pull_cmd_by_win(),os.path.join(directory, "gitautopull.bat"))
-        self.overwrite_if_different(self.get_pull_cmd_by_linux(),os.path.join(directory, "gitautopull.sh"))
+        self.overwrite_if_different(self.get_pull_cmd_by_win(),os.path.join(directory, ".gitautopull.bat"))
+        self.overwrite_if_different(self.get_pull_cmd_by_linux(),os.path.join(directory, ".gitautopull.sh"))
 
     def scan_directory(self,root_directory=None, skip_dirs={}):
         if root_directory==None:
