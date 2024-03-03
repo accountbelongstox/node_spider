@@ -87,7 +87,7 @@ git diff --name-only --diff-filter=U
                 # If contents are different, overwrite destination file with source content
                 with open(destination_file, 'w', encoding='utf-8') as dest:
                     dest.write(source_content)
-                    print("File overwritten successfully.")
+                    self.print_info("File overwritten successfully.")
             else:
                 print("The content of destination file is the same as source file. No need to overwrite.")
         else:
@@ -95,7 +95,7 @@ git diff --name-only --diff-filter=U
             # If destination file does not exist, create a new file with source content
             with open(destination_file, 'w', encoding='utf-8') as dest:
                 dest.write(source_content)
-                print("New file created and content copied successfully.")
+                self.print_info("New file created and content copied successfully.")
 
     def generate_scripts(self, directory):
         # Check if gitput.bat exists
