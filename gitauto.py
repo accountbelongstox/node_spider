@@ -72,53 +72,38 @@ git diff --name-only --diff-filter=U
 git pull origin master
 git diff --name-only --diff-filter=U
         """
-    def generate_autopython(self,destination_file):
-        try:
-            with open(__file__, 'r', encoding='utf-8') as source:
-                content = source.read()
+    def overwrite_if_different(self, source_file, destination_file):
+        if os.path.isfile(source_file):
+            with open(source_file, 'r', encoding='utf-8') as source:
+                source_content = source.read()
+        else:
+            source_content = source_file
+
+        if os.path.exists(destination_file):
+            with open(destination_file, 'r', encoding='utf-8') as dest:
+                dest_content = dest.read()
+            if dest_content != source_content:
+                print("The content of destination file is different from source file. Overwriting...")
+                # If contents are different, overwrite destination file with source content
                 with open(destination_file, 'w', encoding='utf-8') as dest:
-                    dest.write(content)
-            self.print_info("File copied successfully.")
-        except FileNotFoundError:
-            self.print_warn("Source file not found.")
-        except Exception as e:
-            self.print_error(f"An error occurred: {str(e)}")
+                    dest.write(source_content)
+                    print("File overwritten successfully.")
+            else:
+                print("The content of destination file is the same as source file. No need to overwrite.")
+        else:
+            print("Destination file does not exist. Creating a new file...")
+            # If destination file does not exist, create a new file with source content
+            with open(destination_file, 'w', encoding='utf-8') as dest:
+                dest.write(source_content)
+                print("New file created and content copied successfully.")
 
     def generate_scripts(self, directory):
         # Check if gitput.bat exists
-        gitput_bat_path = os.path.join(directory, "gitauto.py")
-        if not os.path.exists(gitput_bat_path):
-            self.generate_autopython(gitput_bat_path)
-        else:
-            self.print_info(f"{directory} gitauto.py already exists. Skipping generation.")
-        # Check if gitput.bat exists
-        gitput_bat_path = os.path.join(directory, "gitput.bat")
-        if not os.path.exists(gitput_bat_path):
-            with open(gitput_bat_path, "w") as bat_file:
-                bat_file.write(self.get_put_cmd_by_win())
-        else:
-            self.print_info(f"{directory} gitput.bat already exists. Skipping generation.")
-
-        # Check if gitput.sh exists
-        gitput_sh_path = os.path.join(directory, "gitput.sh")
-        if not os.path.exists(gitput_sh_path):
-            with open(gitput_sh_path, "w") as sh_file:
-                sh_file.write(self.get_put_cmd_by_linux())
-        else:
-            self.print_info(f"{directory} gitput.sh already exists. Skipping generation.")
-
-        gitput_bat_path = os.path.join(directory, "gitpull.bat")
-        if not os.path.exists(gitput_bat_path):
-            with open(gitput_bat_path, "w") as bat_file:
-                bat_file.write(self.get_pull_cmd_by_win())
-        else:
-            self.print_info(f"{directory} gitpull.bat already exists. Skipping generation.")
-        gitput_bat_path = os.path.join(directory, "gitpull.sh")
-        if not os.path.exists(gitput_bat_path):
-            with open(gitput_bat_path, "w") as bat_file:
-                bat_file.write(self.get_pull_cmd_by_linux())
-        else:
-            self.print_info(f"{directory} gitpull.sh already exists. Skipping generation.")
+        self.overwrite_if_different(__file__,os.path.join(directory, "gitauto.py"))
+        self.overwrite_if_different(self.get_put_cmd_by_win(),os.path.join(directory, "gitput.sh"))
+        self.overwrite_if_different(self.get_put_cmd_by_linux(),os.path.join(directory, "gitput.bat"))
+        self.overwrite_if_different(self.get_pull_cmd_by_win(),os.path.join(directory, "gitautopull.bat"))
+        self.overwrite_if_different(self.get_pull_cmd_by_linux(),os.path.join(directory, "gitautopull.sh"))
 
     def scan_directory(self,root_directory=None, skip_dirs={}):
         if root_directory==None:
