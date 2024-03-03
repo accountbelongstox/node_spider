@@ -23,8 +23,7 @@ class DirectoryScanner:
         subprocess.run(["git", "commit", "-m", timestamp])
         push_process = subprocess.run(["git", "push", "--set-upstream", "origin", "master"], capture_output=True)
         # Print commit details
-        self.print_info(f"Committed directory: {directory}")
-        self.print_info(f"Commit timestamp: {timestamp}")
+        self.print_info(f"Committed directory: {directory}, {timestamp}")
 
         # Check if there's any error during the push operation
         if push_process.returncode != 0:
