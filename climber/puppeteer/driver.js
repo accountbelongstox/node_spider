@@ -7,8 +7,8 @@ const Handle = require('./modus/handle')
 const Download = require('./modus/download')
 const Screen = require('./modus/screen')
 const Content = require('./modus/content');
-const Util = require('../../../provider/util');
-const {opt} = require('../../../provider/practical');
+const Util = require('../../../node_provider/utils');
+const {opt} = require('../../../node_provider/practicals');
 const config = opt.initConfig()
 
 class PuppeteerDriver extends DriverInterface {
