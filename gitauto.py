@@ -6,6 +6,7 @@ class DirectoryScanner:
     def __init__(self):
         self.scanned_dirs = []
         self.root_directory = os.getcwd()
+        self.commmit_root_directory = False
 
     def print_error(self, text):
         print("\033[91m{}\033[00m".format(text))  # Print text in red color
@@ -109,16 +110,22 @@ git diff --name-only --diff-filter=U
             root_directory = self.root_directory
 
         def not_skip(directory):
+            self.print_info(f"skip_whole:directory:{directory}")
             if directory in skip_dirs.get('skip_whole', []):
                 return False
             for skip_dir in skip_dirs.get('skip_start', []):
-                if directory.startswith(os.path.join(root_directory, skip_dir)):
+                self.print_info(f"skip_dir:{skip_dir} directory:{directory}")
+                if directory.startswith(skip_dir):
                     return False
             for skip_dir in skip_dirs.get('skip_end', []):
+                self.print_info(f"skip_end:{skip_dir} directory:{directory}")
                 if directory.endswith(skip_dir):
                     return False
             return True
-        
+        if not self.commmit_root_directory:
+            self.commmit_root_directory = True
+            self.git_commmit_directory(self.root_directory)
+
         for item in os.listdir(root_directory):
             item_path = os.path.join(root_directory, item)
             if os.path.isdir(item_path):
