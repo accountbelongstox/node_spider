@@ -151,8 +151,8 @@ git diff --name-only --diff-filter=U
                 pass
         
     def git_commmit_directory(self, directory):
-        self.generate_scripts(directory)
         self.print_info(f"Git-Directory: {directory}")
+        self.generate_scripts(directory)
         os.chdir(directory)
         self.git_commit_and_push(directory)
         os.chdir(self.root_directory)
