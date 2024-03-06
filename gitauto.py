@@ -97,6 +97,21 @@ git diff --name-only --diff-filter=U
                 dest.write(source_content)
                 self.print_info("New file created and content copied successfully.")
 
+    def delete_scripts(self, directory):
+        files_to_check = [
+            "gitauto.py",
+            "gitput.sh",
+            "gitput.bat",
+            ".gitautopull.bat",
+            ".gitautopull.sh"
+        ]
+        for file_name in files_to_check:
+            file_path = os.path.join(directory, file_name)
+            self.print_info(f" file_path: {file_path}")
+            if os.path.exists(file_path):
+                os.remove(file_path)
+                self.print_info(f"Deleted file: {file_name}")
+
     def generate_scripts(self, directory):
         # Check if gitput.bat exists
         self.overwrite_if_different(__file__,os.path.join(directory, "gitauto.py"))
@@ -129,12 +144,15 @@ git diff --name-only --diff-filter=U
         for item in os.listdir(root_directory):
             item_path = os.path.join(root_directory, item)
             if os.path.isdir(item_path):
+                git_dir = os.path.join(item_path, '.git')
                 if not_skip(item):
-                    git_dir = os.path.join(item_path, '.git')
                     if os.path.isdir(git_dir):
                         self.print_info(f"is git:{item_path}")
                         self.git_commmit_directory(item_path)
                     self.scan_directory(item_path,skip_dirs)
+                
+                if not os.path.isdir(git_dir):
+                    self.delete_scripts(item_path)
             else:
                 pass
         
