@@ -24,7 +24,7 @@ class DirectoryScanner:
         subprocess.run(["git", "commit", "-m", timestamp])
         push_process = subprocess.run(["git", "push", "--set-upstream", "origin", "master"], capture_output=True)
         # Print commit details
-        self.print_info(f"Committed directory: {directory}, {timestamp}")
+        self.print_info(f"Committed directory: {directory}, {timestamp}\n\n\n\n")
 
         # Check if there's any error during the push operation
         if push_process.returncode != 0:
@@ -87,7 +87,6 @@ git diff --name-only --diff-filter=U
                 # If contents are different, overwrite destination file with source content
                 with open(destination_file, 'w', encoding='utf-8') as dest:
                     dest.write(source_content)
-                    self.print_info("File overwritten successfully.")
         else:
             self.print_warn("Destination file does not exist. Creating a new file...")
             # If destination file does not exist, create a new file with source content
