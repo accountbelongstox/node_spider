@@ -88,8 +88,6 @@ git diff --name-only --diff-filter=U
                 with open(destination_file, 'w', encoding='utf-8') as dest:
                     dest.write(source_content)
                     self.print_info("File overwritten successfully.")
-            else:
-                print("The content of destination file is the same as source file. No need to overwrite.")
         else:
             self.print_warn("Destination file does not exist. Creating a new file...")
             # If destination file does not exist, create a new file with source content
