@@ -141,7 +141,7 @@ git diff --name-only --diff-filter=U
                 git_dir = os.path.join(item_path, '.git')
                 if not_skip(item):
                     if os.path.isdir(git_dir):
-                        self.print_info(f"Git-Directory:{item_path}")
+                        self.print_info(f"Git-Dir:{git_dir}")
                         self.git_commmit_directory(item_path)
                     self.scan_directory(item_path,skip_dirs)
                 
@@ -152,6 +152,7 @@ git diff --name-only --diff-filter=U
         
     def git_commmit_directory(self, directory):
         self.generate_scripts(directory)
+        self.print_info(f"Git-Directory: {directory}")
         os.chdir(directory)
         self.git_commit_and_push(directory)
         os.chdir(self.root_directory)
