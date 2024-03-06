@@ -107,8 +107,8 @@ git diff --name-only --diff-filter=U
         ]
         for file_name in files_to_check:
             file_path = os.path.join(directory, file_name)
-            self.print_info(f" file_path: {file_path}")
             if os.path.exists(file_path):
+                self.print_info(f" file_path: {file_path}")
                 os.remove(file_path)
                 self.print_info(f"Deleted file: {file_name}")
 
