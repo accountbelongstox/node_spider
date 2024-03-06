@@ -125,15 +125,12 @@ git diff --name-only --diff-filter=U
             root_directory = self.root_directory
 
         def not_skip(directory):
-            self.print_info(f"skip_whole:directory:{directory}")
             if directory in skip_dirs.get('skip_whole', []):
                 return False
             for skip_dir in skip_dirs.get('skip_start', []):
-                self.print_info(f"skip_dir:{skip_dir} directory:{directory}")
                 if directory.startswith(skip_dir):
                     return False
             for skip_dir in skip_dirs.get('skip_end', []):
-                self.print_info(f"skip_end:{skip_dir} directory:{directory}")
                 if directory.endswith(skip_dir):
                     return False
             return True
