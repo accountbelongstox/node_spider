@@ -11,6 +11,8 @@ __pycache__/             # Python 编译文件夹
 *.pyo
 *.pyd
 
+*.zip
+
 # Node.js #
 ###############################
 node_modules/
