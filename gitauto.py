@@ -23,6 +23,7 @@ class DirectoryScanner:
         subprocess.run(["git", "add", "."])
         subprocess.run(["git", "commit", "-m", timestamp])
         push_process = subprocess.run(["git", "push", "--set-upstream", "origin", "master"], capture_output=True)
+        print(push_process)
         # Print commit details
         self.print_info(f"Committed-Dir\t: {directory}, {timestamp}\n\n\n\n")
 
